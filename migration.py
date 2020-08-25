@@ -189,9 +189,9 @@ class YouTrackToGitLab:
             counter += 1
 
         print("DONE")
-        print("Delete the attachments in the 'tmp' folder if not needed")
 
     def clean_issue_system(self, milestones=False):
+        print("Purging issue board... (may take a while)")
         # issues (20 at a time)
         for x in range(0, 1000):
             if len(self.gitlab.project.issues.list()) == 0:
@@ -248,11 +248,11 @@ class YouTrackToGitLab:
             headers = self.youtrack._instance.headers
 
             r = requests.get(url, headers=headers, allow_redirects=True)
-            with open(f"tmp/{filename}", "wb") as f:
+            with open(f"attachments/{filename}", "wb") as f:
                 f.write(r.content)
 
             uploaded_file = self.gitlab.project.upload(
-                filename, filepath=f"tmp/{filename}")
+                filename, filepath=f"attachments/{filename}")
             attachments.append(AttachmentMap(filename, uploaded_file))
 
         return attachments

@@ -37,7 +37,7 @@ Generate a permanent token.
 ```
 
 # Run
-`python3 migration.py`
+`./run.sh`
 
 
 # TODO
