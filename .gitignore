@@ -141,4 +141,4 @@ cython_debug/
 .idea/
 
 # VSCode
-.vscode/settings.json
+.vscode/
