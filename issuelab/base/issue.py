@@ -5,6 +5,7 @@ from enum import IntEnum
 from .label import Label
 from .user import User
 from .attachment import Attachment
+from .comment import Comment
 
 
 class IssueState(IntEnum):
@@ -18,10 +19,12 @@ class Issue(BaseModel):
     title: str
     description: str
     author: User
-    labels: List[Label]
-    attachments: List[Attachment]
+    labels: List[Label] = []
+    attachments: List[Attachment] = []
 
     state: IssueState = IssueState.OPEN
+    
+    comments: List[Comment] = []
 
     created_at: float
     updated_at: float = None
@@ -30,3 +33,6 @@ class Issue(BaseModel):
     assignees: List[User] = None
     milestone_id: int = None
     epic_id: int = None
+    
+    estimation: int = None
+    time_spent: int = None

@@ -9,3 +9,4 @@ class Comment(BaseModel):
     author: User
     text: str
     attachments: List[Attachment] = []
+    created_at: float = None
