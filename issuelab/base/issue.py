@@ -36,3 +36,17 @@ class Issue(BaseModel):
     
     estimation: int = None
     time_spent: int = None
+
+
+def extract_users(issue: Issue):
+    users: List[User] = []
+    
+    if issue.author:
+        users.append(issue.author)
+        
+    if issue.assignees:
+        for assignee in issue.assignees:
+            users.append(assignee)
+            
+    # remove duplicates
+    return set(users)
