@@ -1,18 +1,46 @@
-import setuptools
+import os
+import re
 
-with open("README.md", "r") as fh:
-    long_description = fh.read()
+from setuptools import setup
 
-setuptools.setup(
+
+def get_long_description():
+    """
+    Return the README.
+    """
+    return open("README.md", "r", encoding="utf8").read()
+
+
+def get_packages(package):
+    """
+    Return root package and all sub-packages.
+    """
+    return [
+        dirpath
+        for dirpath, dirnames, filenames in os.walk(package)
+        if os.path.exists(os.path.join(dirpath, "__init__.py"))
+    ]
+
+
+def get_version(package):
+    """
+    Return package version as listed in `__version__` in `init.py`.
+    """
+    path = os.path.join(package, "__init__.py")
+    init_py = open(path, "r", encoding="utf8").read()
+    return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
+
+
+setup(
     name="issuelab",
-    version="0.0.2",
+    version=get_version("issuelab"),
     author="Tafil Avdyli",
     author_email="tafil@tafhub.de",
     description="Migrate issue boards",
-    long_description=long_description,
+    long_description=get_long_description(),
     long_description_content_type="text/markdown",
     url="https://github.com/tafilz/issuelab",
-    packages=setuptools.find_packages(),
+    packages=get_packages("issuelab"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
