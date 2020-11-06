@@ -10,6 +10,5 @@ class AttachmentType(IntEnum):
 
 class Attachment(BaseModel):
     filename: str
-    path: Path
-    url: str = ""
-    type: AttachmentType
+    url: str = None
+    type: AttachmentType = None
