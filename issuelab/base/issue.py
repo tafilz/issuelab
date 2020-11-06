@@ -31,8 +31,7 @@ class Issue(BaseModel):
     due_date: float = None
 
     assignees: List[User] = None
-    milestone_id: int = None
-    epic_id: int = None
+    sprint: str = None
     
     estimation: int = None
     time_spent: int = None
