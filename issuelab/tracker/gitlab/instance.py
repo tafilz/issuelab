@@ -20,6 +20,8 @@ class GitLabTarget(TargetInstance):
         self.project_id = int(project_id)
         self._instance = gitlab.Gitlab(host, private_token=token)
         self.project = self._instance.projects.get(project_id)
+
+        self.reference_prefix = None
         
     def push_milestone(self, milestone: Milestone):
         new_gl_milestone = {
@@ -69,7 +71,7 @@ class GitLabTarget(TargetInstance):
 
                
         # Create issue
-        new_gitlab_issue['description'] = self.fix_references(new_gitlab_issue['description'], "T2-")
+        new_gitlab_issue['description'] = self.fix_references(new_gitlab_issue['description'])
         gl_issue = self.project.issues.create(new_gitlab_issue, sudo=issue.author.username)
 
         # After issue creation
@@ -130,7 +132,7 @@ class GitLabTarget(TargetInstance):
                 comment.text = "Comment deleted"
 
             # push comment
-            comment.text = self.fix_references(comment.text, "T2-")
+            comment.text = self.fix_references(comment.text)
             gitlab_note = {
                     'body': comment.text,
                     'created_at': get_iso_timestamp(comment.created_at),
@@ -157,8 +159,13 @@ class GitLabTarget(TargetInstance):
 
         return label.name
 
-    
-    def fix_references(self, text:str, issue_tag: str):
-        return text.replace(issue_tag, "#")
+    def set_reference_prefix(self, prefix: str):
+        self.reference_prefix = prefix
+
+    def fix_references(self, text:str):
+        if self.reference_prefix:
+            return text.replace(issue_tag, "#")
+        else:
+            return text
 
         

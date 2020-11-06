@@ -15,10 +15,11 @@ from issuelab.base.user import User
 def push_command(args):
     project = get_project_file(env_file_path)
     
-    push_gitlab(project.target)
+    push_gitlab(project.target, project.source)
     
-def push_gitlab(target: ProjectConnection):
+def push_gitlab(target: ProjectConnection, source: ProjectConnection):
     gitlab = GitLabTarget(target.host, target.token, target.project_id)
+    gitlab.set_reference_prefix(f"{source.project_id}-")
     
     # issues (20 at a time)
     for x in range(0, 1000):
